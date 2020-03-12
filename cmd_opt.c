@@ -31,6 +31,7 @@
 
 const char *m_help_str = " \
 Usage: communicator -c [DIR]\n \
+Usage: communicator --check \n \
 Usage: communicator --help\n\n \
     communicator are used to communicate with external devices. \n \
 ";
@@ -50,6 +51,8 @@ int cmdopt_parser_cmd(int argc, char **argv)
         case 0://长参数处理
             if (strcmp("help", long_options[option_index].name) == 0) {
                 printf("%s", m_help_str);
+            } else if (strcmp("check", long_options[option_index].name) == 0) {
+                // 增加系统环境监测代码，监测完毕提供一个返回值，可以供命令行进行调用
             } else {
                 glog4c_err("unknow param\n");
             }

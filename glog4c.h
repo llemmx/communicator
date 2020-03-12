@@ -1,6 +1,7 @@
 #ifndef GLOG4C_H_
 #define GLOG4C_H_
 
+#include <stdio.h>
 #include <syslog.h>
 
 //安gun标准extern inline特性与宏定义类似不单独汇编，在代码中展开

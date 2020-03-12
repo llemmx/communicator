@@ -137,17 +137,22 @@ int main(int argc, char **argv)
         mq_close(m_queue2app);
         exit(EXIT_FAILURE);
     }
-
+    // 按队列缓冲尺寸申请内测
     char *buf = (char*)malloc(a2q_attr.mq_msgsize);
 
     // 创建异步通信线程
+    ret_v = asyncomm_init(&m_queue2app);
+    if (ret_v < 0) {
+        // 通信线程初始化失败，终止程序
+        exit(EXIT_FAILURE);
+    }
 
     // 循环读取应用进程发来的数据
     ssize_t qsize;
     for (;m_exit_flag != 1;) {
         qsize = mq_receive(m_app2queue, buf, a2q_attr.mq_msgsize, NULL);
         if (qsize < 0){
-            if (errno == EAGAIN){
+            if (errno == EAGAIN){ // 资源未准备好，异步通信时容易发生此类事件
                 usleep(10);
                 continue;
             }
@@ -155,6 +160,8 @@ int main(int argc, char **argv)
             glog4c_err(strerror(errno));
             continue;
         }
+
+        // 解析对应的协议，格式简单处理. 命令2B ｜ 数量2B ｜ 类型1B ｜ 数据
         glog4c_info("get buf size = %ld\n", qsize);
     }
 
