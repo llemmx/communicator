@@ -14,7 +14,6 @@
 *------------------------------------------------------------------------------
 ******************************************************************************/
 //需要用到的系统头文件
-#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <errno.h>
@@ -124,7 +123,7 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
 
-    // Register signals 
+    // Register signals
     signal(SIGINT, ctrl_c); 
 
     // 读取当前队列属性
